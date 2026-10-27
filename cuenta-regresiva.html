@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuenta regresiva</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: transparent;
+}
+
+#marco-cuenta {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  position: relative;
+  line-height: 0;
+  overflow: hidden;
+}
+
+#marco-cuenta .imagen-marco {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#marco-cuenta .cuenta {
+  position: absolute;
+  top: 29%;
+  left: 5%;
+  width: 90%;
+  height: 26%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 1%;
+  line-height: normal;
+}
+
+#marco-cuenta .unidad {
+  min-width: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#marco-cuenta .numero {
+  color: #A4864E;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 500;
+  font-size: clamp(25px, 5.8vw, 58px);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#marco-cuenta .etiqueta {
+  color: #A4864E;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(8px, 1.45vw, 13px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-top: 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  #marco-cuenta .cuenta {
+    left: 4%;
+    width: 92%;
+    gap: 0;
+  }
+
+  #marco-cuenta .numero {
+    font-size: clamp(22px, 6.2vw, 29px);
+  }
+
+  #marco-cuenta .etiqueta {
+    font-size: clamp(7px, 1.8vw, 9px);
+    letter-spacing: 0;
+    margin-top: 5px;
+  }
+}
+</style>
+</head>
+<body>
+<div id="marco-cuenta">
+  <img class="imagen-marco" src="marco-floral.png" alt="">
+  <div class="cuenta">
+    <div class="unidad">
+      <div class="numero" id="dias">00</div>
+      <div class="etiqueta">DÍAS</div>
+    </div>
+    <div class="unidad">
+      <div class="numero" id="horas">00</div>
+      <div class="etiqueta">HORAS</div>
+    </div>
+    <div class="unidad">
+      <div class="numero" id="minutos">00</div>
+      <div class="etiqueta">MINUTOS</div>
+    </div>
+    <div class="unidad">
+      <div class="numero" id="segundos">00</div>
+      <div class="etiqueta">SEGUNDOS</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const fechaObjetivo = new Date('2026-12-18T19:00:00-06:00').getTime();
+
+  function actualizar() {
+    const restante = Math.max(0, fechaObjetivo - Date.now());
+    const valores = {
+      dias: Math.floor(restante / 86400000),
+      horas: Math.floor((restante % 86400000) / 3600000),
+      minutos: Math.floor((restante % 3600000) / 60000),
+      segundos: Math.floor((restante % 60000) / 1000)
+    };
+
+    Object.entries(valores).forEach(([id, valor]) => {
+      const elemento = document.getElementById(id);
+      if (elemento) elemento.textContent = String(valor).padStart(2, '0');
+    });
+  }
+
+  actualizar();
+  setInterval(actualizar, 1000);
+})();
+</script>
+</body>
+</html>
