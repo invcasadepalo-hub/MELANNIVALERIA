@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería de fotos</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --dorado: #d4af37;
+  --dorado-claro: #f7e7a1;
+  --rosa-fondo: transparent;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: var(--rosa-fondo);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px;
+}
+
+.galeria {
+  width: min(100%, 390px);
+  padding: 7px;
+  border: 1.5px solid var(--dorado);
+  border-radius: 190px 190px 8px 8px;
+  background: linear-gradient(135deg, #f9edc2, #b99137 30%, #f8e9a8 52%, #a77b28 75%, #f4df8b);
+  box-shadow:
+    0 0 0 2px rgba(255, 248, 218, .8) inset,
+    0 0 13px rgba(190, 148, 45, .24);
+}
+
+.marco-arco {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4.25;
+  overflow: hidden;
+  border: 2px solid #f7e7a1;
+  border-radius: 180px 180px 4px 4px;
+  background: #f8e5eb;
+}
+
+.foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(1.045);
+  transition:
+    opacity 1.15s ease-in-out,
+    transform 3.2s ease-out;
+}
+
+.foto.activa {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.brillo {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 218, .65),
+    inset 0 0 22px rgba(80, 47, 30, .12);
+  z-index: 2;
+}
+
+@media (max-width: 480px) {
+  .galeria {
+    width: min(100%, 330px);
+  }
+}
+</style>
+</head>
+
+<body>
+  <div class="galeria">
+    <div class="marco-arco">
+      <!-- Sube las 4 fotos a la misma carpeta que este archivo HTML.
+           Ponles estos nombres exactos: foto1.jpg, foto2.jpg, foto3.jpg, foto4.jpg -->
+      <img class="foto activa" src="foto1.jpg" alt="Fotografía 1 de la quinceañera">
+      <img class="foto" src="foto2.jpg" alt="Fotografía 2 de la quinceañera">
+      <img class="foto" src="foto3.jpg" alt="Fotografía 3 de la quinceañera">
+      <img class="foto" src="foto4.jpg" alt="Fotografía 4 de la quinceañera">
+      <div class="brillo"></div>
+    </div>
+  </div>
+
+<script>
+const fotos = Array.from(document.querySelectorAll('.foto'));
+let indiceActual = 0;
+
+setInterval(() => {
+  fotos[indiceActual].classList.remove('activa');
+  indiceActual = (indiceActual + 1) % fotos.length;
+  fotos[indiceActual].classList.add('activa');
+}, 3000);
+</script>
+</body>
+</html>
