@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sugerencias de vestimenta | XV Melanni Valeria</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:28px 12px;background:transparent;color:#8f6670;font-family:Georgia,"Times New Roman",serif;text-align:center}
+h1{font-size:clamp(23px,5vw,34px);font-weight:normal;margin:0 0 10px;color:#b78391}
+.subtitle{font-size:14px;letter-spacing:1px;margin-bottom:25px}
+.carousel{max-width:720px;margin:auto;position:relative}
+.viewport{overflow:hidden;border-radius:14px;touch-action:pan-y}
+.track{display:flex;transition:transform .45s ease}
+.slide{flex:0 0 100%;min-width:0;padding:0 5px}
+.slide img{display:block;width:100%;height:clamp(300px,70vw,520px);object-fit:contain;background:rgba(249,232,237,.35);border-radius:12px}
+.controls{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:18px}
+.arrow{width:42px;height:42px;border:1px solid #dfb5c0;border-radius:50%;background:#fff8fa;color:#b78391;font-size:24px;cursor:pointer}
+.arrow:hover{background:#f5e1e7}
+.counter{font-size:13px;letter-spacing:1px}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:15px}
+.dot{width:7px;height:7px;border-radius:50%;background:#e8ccd4;border:0;padding:0;cursor:pointer}
+.dot.active{background:#b78391;transform:scale(1.25)}
+.hint{font-size:12px;margin-top:18px;color:#a98b92}
+</style>
+</head>
+<body>
+  <h1>Sugerencias de vestimenta</h1>
+  <div class="subtitle">PARA ESTE DÍA TAN ESPECIAL</div>
+  <div class="carousel">
+    <div class="viewport" id="viewport">
+      <div class="track" id="track">
+        <div class="slide"><img src="foto1.png" alt="Sugerencia de vestimenta 1"></div>
+        <div class="slide"><img src="foto2.png" alt="Sugerencia de vestimenta 2"></div>
+        <div class="slide"><img src="foto3.png" alt="Sugerencia de vestimenta 3"></div>
+        <div class="slide"><img src="foto4.png" alt="Sugerencia de vestimenta 4"></div>
+        <div class="slide"><img src="foto5.png" alt="Sugerencia de vestimenta 5"></div>
+        <div class="slide"><img src="foto6.png" alt="Sugerencia de vestimenta 6"></div>
+        <div class="slide"><img src="foto7.png" alt="Sugerencia de vestimenta 7"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="arrow" id="prev" aria-label="Imagen anterior">‹</button>
+      <span class="counter" id="counter">1 / 7</span>
+      <button class="arrow" id="next" aria-label="Imagen siguiente">›</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+  <div class="hint">Desliza las imágenes para ver las 7 sugerencias</div>
+<script>
+(function(){
+  const track=document.getElementById('track');
+  const counter=document.getElementById('counter');
+  const dots=document.getElementById('dots');
+  const viewport=document.getElementById('viewport');
+  const total=7;
+  let index=0,startX=0;
+  for(let i=0;i<total;i++){
+    const dot=document.createElement('button');
+    dot.className='dot';
+    dot.setAttribute('aria-label','Ver imagen '+(i+1));
+    dot.addEventListener('click',()=>go(i));
+    dots.appendChild(dot);
+  }
+  function go(n){
+    index=(n+total)%total;
+    track.style.transform='translateX(-'+(index*100)+'%)';
+    counter.textContent=(index+1)+' / '+total;
+    [...dots.children].forEach((d,i)=>d.classList.toggle('active',i===index));
+  }
+  document.getElementById('prev').addEventListener('click',()=>go(index-1));
+  document.getElementById('next').addEventListener('click',()=>go(index+1));
+  viewport.addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});
+  viewport.addEventListener('touchend',e=>{
+    const delta=e.changedTouches[0].screenX-startX;
+    if(Math.abs(delta)>45)go(index+(delta<0?1:-1));
+  },{passive:true});
+  go(0);
+})();
+</script>
+</body>
+</html>
